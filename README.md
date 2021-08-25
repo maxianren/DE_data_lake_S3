@@ -12,4 +12,4 @@ debug.ipynb: code to test if the implementation correspond to expectation and de
 
 Steps of implementation:
 
-Activate terminal, go to the working directory Type "python etl.py", when the program finish running, the desired dimension table should be created in the objective directory. There will be indication when each table is created.
+Activate terminal, go to the working directory Type "python etl.py", when the program finish running, the desired dimension table should be created in the objective directory. There will be indication when each table is created.# DE_data_lake_S3
