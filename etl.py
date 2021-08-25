@@ -20,7 +20,8 @@ def create_spark_session():
         .getOrCreate()
     return spark
 
-
+# this function extract json data from "song-data" directory in S3, 
+# tranform the data into "songs" and "artists" table and load them back to S3 in parquet form
 def process_song_data(spark, input_data, output_data):
     # get filepath to song data file
     song_data = input_data + "song-data/*/*/*/*.json"
@@ -35,6 +36,7 @@ def process_song_data(spark, input_data, output_data):
         distinct (song_id) AS song_id, 
         title AS title,
         artist_id AS artist_id,
+        artist_name AS artist,
         year AS year,
         duration AS duration
     from song_data
@@ -42,7 +44,7 @@ def process_song_data(spark, input_data, output_data):
     """)
     
     # write songs table to parquet files partitioned by year and artist
-    songs_table.write.parquet(output_data + 'songs', mode="overwrite")
+    songs_table.write.partitionBy('year','artist').parquet(output_data + 'songs', mode="overwrite")
     
     print("successfully created songs table in s3")
 
@@ -64,7 +66,9 @@ def process_song_data(spark, input_data, output_data):
     print("successfully created artists table in s3")
 
 
-
+# this function extract json data from "log-data" directory in S3, 
+# tranform the data into dimension table "users" and "time" and load them back to S3 in parquet form.
+# it also create a fact table "songplays" using both "log-data", "song-data" and "time" table already created, the fact table will be store in S3 as well
 def process_log_data(spark, input_data, output_data):
     # get filepath to log data file
     log_data = input_data + "log-data/*.json"
@@ -156,10 +160,10 @@ def process_log_data(spark, input_data, output_data):
 
 def main():
     spark = create_spark_session()
-    input_data = "s3a://udacity-dend/"
-    output_data = "s3a://udacity-dend/"
-    #input_data = "./data/"
-    #output_data = "./"
+    #input_data = "s3a://udacity-dend/"
+    #output_data = "s3a://udacity-dend/"
+    input_data = "./data/"
+    output_data = "./"
     
     process_song_data(spark, input_data, output_data)    
     process_log_data(spark, input_data, output_data)
