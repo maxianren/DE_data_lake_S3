@@ -4,11 +4,11 @@ Summary of the project A music streaming startup, Sparkify, want to move their d
 
 Description of the working folder supporting file
 
-dwh.cfg: credential information to access cloud service
+- dwh.cfg: credential information to access cloud service
 
-etl.py: connect to cloud server, extract data from S3, transform them into desired form and load data back into S3 as final product
+- etl.py: connect to cloud server, extract data from S3, transform them into desired form and load data back into S3 as final product
 
-debug.ipynb: code to test if the implementation correspond to expectation and debug
+- debug.ipynb: code to test if the implementation correspond to expectation and debug
 
 Steps of implementation:
 
